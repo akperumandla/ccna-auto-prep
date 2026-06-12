@@ -1,0 +1,404 @@
+{
+  "version": "1",
+  "name": "CCNA Automation - API Intro",
+  "items": [
+    {
+      "type": "folder",
+      "name": "01 Intro - Deck of Cards (no auth)",
+      "seq": 1,
+      "items": [
+        {
+          "type": "http",
+          "name": "01 New Deck (GET)",
+          "seq": 1,
+          "request": {
+            "url": "https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "deck_count",
+                "value": "1",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none"
+            },
+            "script": {
+              "req": "",
+              "res": "// Save the deck_id so the next requests can reuse it.\nbru.setEnvVar(\"deck_id\", res.body.deck_id);"
+            },
+            "vars": {
+              "req": [],
+              "res": []
+            },
+            "assertions": [
+              {
+                "name": "res.status",
+                "operator": "eq",
+                "value": "200",
+                "enabled": true
+              }
+            ],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            },
+            "docs": "Your first API call. No authentication needed.\n\nGET = \"give me data\" - the simplest, most common API verb.\nThe post-response script saves deck_id to the environment so 02 and 03 can reuse it.\n\njq equivalent: jq '.deck_id'"
+          }
+        },
+        {
+          "type": "http",
+          "name": "02 Draw Cards (GET)",
+          "seq": 2,
+          "request": {
+            "url": "https://deckofcardsapi.com/api/deck/{{deck_id}}/draw/?count=5",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "count",
+                "value": "5",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none"
+            },
+            "script": {
+              "req": "",
+              "res": ""
+            },
+            "vars": {
+              "req": [],
+              "res": []
+            },
+            "assertions": [
+              {
+                "name": "res.status",
+                "operator": "eq",
+                "value": "200",
+                "enabled": true
+              }
+            ],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            },
+            "docs": "Draw cards from the deck created in 01.\n\nNotice deck_id is IN THE PATH and count is a QUERY parameter (after the ?).\nRun 01 first so {{deck_id}} is populated.\n\njq equivalent: jq '.cards[].code'"
+          }
+        },
+        {
+          "type": "http",
+          "name": "03 Reshuffle (POST)",
+          "seq": 3,
+          "request": {
+            "url": "https://deckofcardsapi.com/api/deck/{{deck_id}}/shuffle/",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none"
+            },
+            "script": {
+              "req": "",
+              "res": ""
+            },
+            "vars": {
+              "req": [],
+              "res": []
+            },
+            "assertions": [
+              {
+                "name": "res.status",
+                "operator": "eq",
+                "value": "200",
+                "enabled": true
+              }
+            ],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            },
+            "docs": "Reshuffle the existing deck. This uses POST instead of GET.\n\nGET asks for data; POST asks the server to DO something / change state.\nMany real APIs (like creating a config) use POST the same way."
+          }
+        },
+        {
+          "type": "folder",
+          "name": "04 Status Codes",
+          "seq": 4,
+          "items": [
+            {
+              "type": "http",
+              "name": "2xx - 200 OK",
+              "seq": 1,
+              "request": {
+                "url": "https://deckofcardsapi.com/api/deck/new/shuffle/",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "none" },
+                "docs": "2xx = Success. A normal, correct call returns 200 OK."
+              }
+            },
+            {
+              "type": "http",
+              "name": "3xx - 301 Moved (http not https)",
+              "seq": 2,
+              "request": {
+                "url": "http://deckofcardsapi.com/api/deck/new/shuffle/",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "301", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "none" },
+                "docs": "3xx = Redirection. Calling http:// instead of https:// returns 301 Moved Permanently.\n\nNOTE: Bruno follows redirects by default, so you may land on 200. To SEE the 301, turn off 'Follow Redirects' in this request's Settings tab. (curl shows the 301 unless you add -L.)"
+              }
+            },
+            {
+              "type": "http",
+              "name": "4xx - 404 Not Found (bad deck_id)",
+              "seq": 3,
+              "request": {
+                "url": "https://deckofcardsapi.com/api/deck/THISDECKDOESNOTEXIST/draw/?count=2",
+                "method": "GET",
+                "headers": [],
+                "params": [
+                  { "name": "count", "value": "2", "type": "query", "enabled": true }
+                ],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "404", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "none" },
+                "docs": "4xx = Client error (YOU sent something wrong). A deck_id that doesn't exist returns 404 Not Found."
+              }
+            },
+            {
+              "type": "http",
+              "name": "5xx - 500 Server Error (count=abc)",
+              "seq": 4,
+              "request": {
+                "url": "https://deckofcardsapi.com/api/deck/new/draw/?count=abc",
+                "method": "GET",
+                "headers": [],
+                "params": [
+                  { "name": "count", "value": "abc", "type": "query", "enabled": true }
+                ],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "500", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "none" },
+                "docs": "5xx = Server error (the API itself broke). A non-numeric count makes the server choke and return 500 Internal Server Error."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "02 Meraki Dashboard (auth)",
+      "seq": 2,
+      "items": [
+        {
+          "type": "http",
+          "name": "11 Get Orgs (GET)",
+          "seq": 1,
+          "request": {
+            "url": "https://api.meraki.com/api/v1/organizations",
+            "method": "GET",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json", "enabled": true }
+            ],
+            "params": [],
+            "body": { "mode": "none" },
+            "script": {
+              "req": "",
+              "res": "// Save the first org's id so 12 can reuse it.\nif (res.body && res.body.length > 0) {\n  bru.setEnvVar(\"org_id\", res.body[0].id);\n}"
+            },
+            "vars": { "req": [], "res": [] },
+            "assertions": [
+              { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+            ],
+            "tests": "",
+            "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+            "docs": "List every organization your API key can see.\n\nThe one new thing vs. the Deck API: the Authorization: Bearer header (set on the Auth tab).\nThe post-response script saves the first org id to {{org_id}}.\n\njq equivalent: jq '.[] | {name, id}'"
+          }
+        },
+        {
+          "type": "http",
+          "name": "12 Get Networks (GET)",
+          "seq": 2,
+          "request": {
+            "url": "https://api.meraki.com/api/v1/organizations/{{org_id}}/networks",
+            "method": "GET",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json", "enabled": true }
+            ],
+            "params": [],
+            "body": { "mode": "none" },
+            "script": {
+              "req": "",
+              "res": "// Save the first network's id so 13 and 14 can reuse it.\nif (res.body && res.body.length > 0) {\n  bru.setEnvVar(\"network_id\", res.body[0].id);\n}"
+            },
+            "vars": { "req": [], "res": [] },
+            "assertions": [
+              { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+            ],
+            "tests": "",
+            "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+            "docs": "List the networks inside one organization.\n\norg_id is in the path. Run 11 first so {{org_id}} is populated.\n\njq equivalent: jq '.[] | {name, id}'"
+          }
+        },
+        {
+          "type": "http",
+          "name": "13 Get Devices (GET)",
+          "seq": 3,
+          "request": {
+            "url": "https://api.meraki.com/api/v1/networks/{{network_id}}/devices",
+            "method": "GET",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json", "enabled": true }
+            ],
+            "params": [],
+            "body": { "mode": "none" },
+            "script": { "req": "", "res": "" },
+            "vars": { "req": [], "res": [] },
+            "assertions": [
+              { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+            ],
+            "tests": "",
+            "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+            "docs": "List every device in one network.\n\nnetwork_id is in the path. Run 12 first so {{network_id}} is populated.\n\njq equivalent: jq '.[] | {name, model, serial}'"
+          }
+        },
+        {
+          "type": "http",
+          "name": "14 Get Clients (GET)",
+          "seq": 4,
+          "request": {
+            "url": "https://api.meraki.com/api/v1/networks/{{network_id}}/clients?timespan=86400",
+            "method": "GET",
+            "headers": [
+              { "name": "Content-Type", "value": "application/json", "enabled": true }
+            ],
+            "params": [
+              { "name": "timespan", "value": "86400", "type": "query", "enabled": true }
+            ],
+            "body": { "mode": "none" },
+            "script": { "req": "", "res": "" },
+            "vars": { "req": [], "res": [] },
+            "assertions": [
+              { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+            ],
+            "tests": "",
+            "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+            "docs": "List the clients seen on one network in the last 24 hours.\n\ntimespan is a query parameter, in seconds (86400 = 24h, max 2592000 = 31 days).\n\njq equivalent: jq '.[] | {description, mac, ip}'"
+          }
+        },
+        {
+          "type": "folder",
+          "name": "24 Status Codes",
+          "seq": 5,
+          "items": [
+            {
+              "type": "http",
+              "name": "2xx - 200 OK (real key)",
+              "seq": 1,
+              "request": {
+                "url": "https://api.meraki.com/api/v1/organizations",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "200", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+                "docs": "2xx = Success. A normal call with a valid key returns 200 OK."
+              }
+            },
+            {
+              "type": "http",
+              "name": "3xx - 301 Moved (http not https)",
+              "seq": 2,
+              "request": {
+                "url": "http://api.meraki.com/api/v1/organizations",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "301", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "bearer", "bearer": { "token": "{{MERAKI_API_KEY}}" } },
+                "docs": "3xx = Redirection. http:// instead of https:// returns 301 Moved Permanently.\n\nNOTE: Bruno follows redirects by default, so you may land on a different code. Turn off 'Follow Redirects' in Settings to SEE the 301."
+              }
+            },
+            {
+              "type": "http",
+              "name": "4xx - 401 Unauthorized (fake key)",
+              "seq": 3,
+              "request": {
+                "url": "https://api.meraki.com/api/v1/organizations",
+                "method": "GET",
+                "headers": [],
+                "params": [],
+                "body": { "mode": "none" },
+                "script": { "req": "", "res": "" },
+                "vars": { "req": [], "res": [] },
+                "assertions": [
+                  { "name": "res.status", "operator": "eq", "value": "401", "enabled": true }
+                ],
+                "tests": "",
+                "auth": { "mode": "bearer", "bearer": { "token": "FAKEKEY123" } },
+                "docs": "4xx = Client error. A fake/missing API key returns 401 Unauthorized.\n\nTeaching point: Meraki checks the key FIRST, so a bad key always returns 401 - that's why we can't force a 400/404/500 here with a fake key.\n\nOther codes you'll meet once authenticated:\n  400 = Bad Request (malformed body / invalid parameter)\n  404 = Not Found (valid key, but that org/network ID doesn't exist)\n  429 = Too Many Requests (rate limit - back off and retry)\n  5xx = Meraki's own servers had a problem (not you)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "environments": [
+    {
+      "name": "ccnaauto",
+      "variables": [
+        { "name": "MERAKI_API_KEY", "value": "", "enabled": true, "secret": true, "type": "text" },
+        { "name": "deck_id", "value": "", "enabled": true, "secret": false, "type": "text" },
+        { "name": "org_id", "value": "", "enabled": true, "secret": false, "type": "text" },
+        { "name": "network_id", "value": "", "enabled": true, "secret": false, "type": "text" }
+      ]
+    }
+  ]
+}
