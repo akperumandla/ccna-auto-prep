@@ -18,6 +18,7 @@ The material is organized into **seasons** and **episodes**:
 | Episode | Title | What it covers |
 |---------|-------|----------------|
 | [s1/ep1](./s1/ep1) | Intro to APIs | REST fundamentals: GET/POST verbs, parsing JSON with `jq`, and reading HTTP status codes. Includes a no-auth (Deck of Cards) and an authenticated (Meraki Dashboard) script set, plus a Bruno collection. |
+| [s1/ep2](./s1/ep2) | Data Formats | JSON, YAML, and XML side by side: the same network-device document in all three formats, how objects/arrays/types map between them, and converting losslessly with `yq`. |
 
 *More episodes coming as the series continues.*
 

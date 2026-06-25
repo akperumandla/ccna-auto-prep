@@ -1,0 +1,52 @@
+<device>
+  <hostname>core-sw-01</hostname>
+  <vendor>Cisco</vendor>
+  <model>Catalyst 9300</model>
+  <os_version>17.9.4a</os_version>
+  <managed>true</managed>
+  <uptime_days>412</uptime_days>
+  <temperature_celsius>34.5</temperature_celsius>
+  <serial_number>FOC2145L0XY</serial_number>
+  <location>
+    <site>HQ-Campus</site>
+    <building>B1</building>
+    <floor>3</floor>
+    <rack>R12</rack>
+  </location>
+  <dns_servers>192.0.2.53</dns_servers>
+  <dns_servers>198.51.100.53</dns_servers>
+  <tags>core</tags>
+  <tags>distribution</tags>
+  <tags>production</tags>
+  <interfaces>
+    <name>GigabitEthernet1/0/1</name>
+    <description>Uplink to dist-sw-01</description>
+    <enabled>true</enabled>
+    <speed_mbps>1000</speed_mbps>
+    <vlan>10</vlan>
+    <ip_address>10.1.10.2</ip_address>
+  </interfaces>
+  <interfaces>
+    <name>GigabitEthernet1/0/2</name>
+    <description>Access port - lab printer</description>
+    <enabled>false</enabled>
+    <speed_mbps>1000</speed_mbps>
+    <vlan>20</vlan>
+    <ip_address>null</ip_address>
+  </interfaces>
+  <interfaces>
+    <name>TenGigabitEthernet1/1/1</name>
+    <description>Uplink to core-rtr-01</description>
+    <enabled>true</enabled>
+    <speed_mbps>10000</speed_mbps>
+    <vlan>1</vlan>
+    <ip_address>10.0.0.1</ip_address>
+  </interfaces>
+  <snmp>
+    <enabled>true</enabled>
+    <version>3</version>
+    <contact>netops@example.com</contact>
+    <trap_receivers>192.0.2.100</trap_receivers>
+    <trap_receivers>192.0.2.101</trap_receivers>
+  </snmp>
+</device>

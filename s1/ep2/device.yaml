@@ -1,0 +1,47 @@
+device:
+  hostname: core-sw-01
+  vendor: Cisco
+  model: Catalyst 9300
+  os_version: 17.9.4a
+  managed: true
+  uptime_days: 412
+  temperature_celsius: 34.5
+  serial_number: FOC2145L0XY
+  location:
+    site: HQ-Campus
+    building: B1
+    floor: 3
+    rack: R12
+  dns_servers:
+    - 192.0.2.53
+    - 198.51.100.53
+  tags:
+    - core
+    - distribution
+    - production
+  interfaces:
+    - name: GigabitEthernet1/0/1
+      description: Uplink to dist-sw-01
+      enabled: true
+      speed_mbps: 1000
+      vlan: 10
+      ip_address: 10.1.10.2
+    - name: GigabitEthernet1/0/2
+      description: Access port - lab printer
+      enabled: false
+      speed_mbps: 1000
+      vlan: 20
+      ip_address: null
+    - name: TenGigabitEthernet1/1/1
+      description: Uplink to core-rtr-01
+      enabled: true
+      speed_mbps: 10000
+      vlan: 1
+      ip_address: 10.0.0.1
+  snmp:
+    enabled: true
+    version: "3"
+    contact: netops@example.com
+    trap_receivers:
+      - 192.0.2.100
+      - 192.0.2.101

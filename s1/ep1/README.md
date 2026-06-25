@@ -5,6 +5,9 @@ REST APIs the way the CCNA Automation exam topics frame them: making HTTP calls,
 reading the JSON that comes back, understanding HTTP verbs (GET/POST), and
 interpreting HTTP status codes.
 
+> **Maps to CCNA Automation exam topics 2.1–2.7.** See the official
+> [200-901 CCNAAUTO exam topics (PDF)](https://learningcontent.cisco.com/documents/marketing/exam-topics/200-901-CCNAAUTO_v.1.1.pdf).
+
 You work through two sets of examples, easiest first:
 
 1. **Deck of Cards API** — a free, public, **no-authentication** API. The gentlest
