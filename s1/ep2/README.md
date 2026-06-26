@@ -222,24 +222,67 @@ string `"null"`. Another reminder that XML carries text, not meaning.
 
 ---
 
-## VSCode extensions (formatting, linting, validation, conversion)
+## VSCode extensions
 
-> **TODO:** This section will be filled in once the extension list is finalized.
-> It will cover, for JSON / YAML / XML:
->
-> - **Conversion** — converting between the three formats inside the editor.
-> - **Formatting** — auto-indent / pretty-print on save.
-> - **Linting** — catching syntax errors (e.g. YAML indentation mistakes) as you type.
-> - **Validation** — checking a document against a schema.
->
-> (Leave this placeholder until Quinn provides the curated extension list.)
+These extensions make the JSON / YAML / XML files in this episode easier to read,
+edit, and validate. JSON support is **built in** to VSCode (formatting, syntax
+highlighting, and schema validation), so the add-ons below cover YAML and XML.
+
+| Extension | Marketplace ID | What it gives you |
+|-----------|----------------|-------------------|
+| **YAML** (Red Hat) | [`redhat.vscode-yaml`](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) | YAML formatting, linting (catches indentation mistakes as you type), auto-completion, and schema validation. |
+| **XML** (Red Hat) | [`redhat.vscode-xml`](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml) | XML formatting, syntax checking (well-formedness), auto-completion, and validation against DTD/XSD schemas. |
+| **Cursor Ruler** | [`freakone.cursoruler`](https://marketplace.visualstudio.com/items?itemName=freakone.cursoruler) | Draws a vertical ruler aligned to your cursor's column — a general editing aid that makes lining up indented YAML and nested XML easier to eyeball. |
+
+Install from the VSCode **Extensions** view (`Cmd`/`Ctrl`+`Shift`+`X`) by searching
+the name, or from the command line:
+
+```bash
+code --install-extension redhat.vscode-yaml
+code --install-extension redhat.vscode-xml
+code --install-extension freakone.cursoruler
+```
+
+> Versions used while recording this episode: `redhat.vscode-xml@0.29.3`,
+> `redhat.vscode-yaml@1.23.0`, `freakone.cursoruler@0.0.4`. Newer versions should
+> work the same way.
 
 ---
 
 ## Online tools
 
-Prefer not to install anything? Several web-based tools can format, validate, and
-convert between JSON, YAML, and XML right in the browser.
+Prefer not to install anything? These web-based tools format, validate, and
+convert between JSON, YAML, and XML right in the browser — handy for a quick check
+or a one-off conversion without `yq` or VSCode.
 
-> **TODO:** This section will be filled in with a curated list of online tools.
-> (Leave this placeholder until Quinn provides the links.)
+> **Heads-up:** Online tools mean **pasting your data into a third-party website**.
+> Fine for the practice data in this episode, but never paste real device configs,
+> credentials, or anything sensitive into a public web tool.
+
+### JSON
+
+| Tool | What it does |
+|------|--------------|
+| [jsonlint.com](https://jsonlint.com) | Validate JSON (reports errors), format/beautify, and minify. Also converts JSON to CSV/YAML/XML and offers a diff, tree viewer, and schema validator. |
+| [jsonformatter.org](https://jsonformatter.org) | Validate (with line-numbered errors), beautify with configurable indentation, minify, tree/graph views, and convert JSON ↔ XML/CSV/YAML. |
+
+### YAML
+
+| Tool | What it does |
+|------|--------------|
+| [yamllint.com](https://www.yamllint.com) | Simple, focused YAML validator: paste YAML and it tells you if it's valid. Also reformats to clean UTF-8 (strips comments) and can resolve aliases. |
+| [jsonformatter.org/yaml-validator](https://jsonformatter.org/yaml-validator) | Validate and beautify YAML, with conversion to JSON/XML/CSV. Loads from file or URL. |
+| [codebeautify.org/yaml-validator](https://codebeautify.org/yaml-validator) | Validate/lint YAML and view it structured. Companion converters for YAML → JSON/XML/CSV. Accepts paste, file, or URL. |
+
+### XML
+
+| Tool | What it does |
+|------|--------------|
+| [xmlformatter.org](https://xmlformatter.org) | Format/beautify XML, validate against the W3C spec with color-coded errors, minify, tree view, and convert XML to JSON/CSV. |
+| [codebeautify.org/xmlvalidator](https://codebeautify.org/xmlvalidator) | Validate XML for well-formedness and validity with clear error messages (handles SOAP/WSDL/RSS/SVG and more). Accepts paste, file, or URL. |
+
+### All-in-one
+
+| Tool | What it does |
+|------|--------------|
+| [codebeautify.org](https://codebeautify.org) | A large toolbox of formatters, validators, and converters covering JSON, YAML, XML, CSV and many others — a single site for round-tripping between all three formats in this episode. |
